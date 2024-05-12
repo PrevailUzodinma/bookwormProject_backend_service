@@ -1,7 +1,7 @@
 const mongoose  = require ('mongoose');
 
 
-const user = new mongoose.Schema({
+const userSchema = new mongoose.Schema({
 
   email: {
     type: String,
@@ -22,15 +22,15 @@ const user = new mongoose.Schema({
   passwordResetTokenExpires: Date
 });
 
-user.methods.createResetPasswordToken = function(){
+userSchema.methods.createResetPasswordToken = function(){
     const resetToken = crypto.randomBytes(32).toString('hex');
     // encrypt reset token and store in db(for security purposes)
     this.passwordResetToken = crypto.createHash('sha256').update(resetToken).digest('hex');
     // set time for token to expire in 10 mins
     this.passwordResetTokenExpires = Date.now() + 10 * 60 * 1000;
   
-    return resetToken
+    return resetToken
   }
-const User = mongoose.model ("User", user);
+const User = mongoose.model("User", userSchema);
 
-module.exports= User 
+module.exports = User 

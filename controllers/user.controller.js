@@ -8,10 +8,9 @@ const sendEmail = require("../utils/email.js");
 
 const signup = async (req, res) => {
   try {
-    const reqBody = req.body;
-
+    const { email, password } = req.body;
     // Check if the user exists
-    const existingUser = await findUserByEmail(reqBody.email);
+    const existingUser = await findUserByEmail(email);
 
     if (existingUser) {
       return res.status(403).json({
@@ -21,7 +20,7 @@ const signup = async (req, res) => {
     }
 
     // If not, create the user and send a response
-    const newUser = await createUser(reqBody);
+    const newUser = await createUser(email, password);
 
     return res.status(201).json({
       success: true,
