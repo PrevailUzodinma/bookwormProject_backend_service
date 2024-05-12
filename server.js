@@ -4,7 +4,7 @@ const dotenv = require("dotenv");
 const logger = require("logger");
 const userRouter = require("./routes/user.router.js");
 const cookieParser = require("cookie-parser");
-const errorHandler = require("./middleware/error.middleware.js");
+const errorHandler = require("./middlewares/error.middleware.js");
 
 // LOAD ENVIRONMENT VARIABLES FROM .ENV FILE
 dotenv.config();

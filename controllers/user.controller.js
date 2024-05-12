@@ -1,5 +1,5 @@
 const express = require("express");
-const { saveuser, findUserByEmail } = require("../service/user.service.js");
+const { saveuser, findUserByEmail } = require("../services/user.service.js");
 const { comparepassword } = require("../config/bcryptConfig.js");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
