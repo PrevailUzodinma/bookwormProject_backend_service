@@ -123,6 +123,12 @@ const forgotPassword = async (req, res, next) => {
 
 // writing functionality for "reset password" - when user clicks on the reset link sent to their mail
 
+const getResetForm = (req, res) => {
+  // Render a password reset form where the user can input a new password
+  res.send("YOU'VE REACHED THE RESET PASSWORD FORM PAGE");
+  //res.render('resetPassword', { resetToken: req.params.resetToken });
+};
+
 const resetPassword = async (req, res, next) => {
   // encrypt the "plain token" passed in the request url
   const token = crypto.createHash("sha256").update(req.params.id).digest("hex");
@@ -146,6 +152,7 @@ const resetPassword = async (req, res, next) => {
   res.status(200).json({
     message: "password reset successfully",
   });
+  // res.redirect('./login')
 };
 
-module.exports = { forgotPassword, resetPassword, signup, login };
+module.exports = { forgotPassword, resetPassword, getResetForm, signup, login };
