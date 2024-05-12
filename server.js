@@ -1,13 +1,15 @@
+const dotenv = require("dotenv");
+dotenv.config();
 const express = require("express");
 const bodyParser = require("body-parser");
-const dotenv = require("dotenv");
 const logger = require("logger");
 const userRouter = require("./routes/user.router.js");
 const cookieParser = require("cookie-parser");
 const errorHandler = require("./middlewares/error.middleware.js");
+const connectDB = require('./config/mongodb.js')
 
-// LOAD ENVIRONMENT VARIABLES FROM .ENV FILE
-dotenv.config();
+// Connect to Database
+connectDB();
 
 // CREATING EXPRESS APP
 const app = express();
@@ -23,6 +25,7 @@ app.use((req, res, next) => {
 app.use(cookieParser());
 
 app.use("/api/v1/users", userRouter);
+
 
 app.use(errorHandler);
 
