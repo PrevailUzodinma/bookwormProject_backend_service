@@ -80,7 +80,7 @@ Authentication
 ### Reset Password
 
 -   Method: `PATCH`
--   Route: `https://books-be-11.onrender.com/api/v1/users/resetPassword`
+-   Route: `https://books-be-11.onrender.com/api/v1/users/resetPassword/:id` - please note: `id` is the token sent to the email of the client
 -   Description: Resets the user's password using a reset token.
 -   Request Body:
 ```
@@ -88,7 +88,7 @@ Authentication
 
     `{
       "password": "newpassword123",
-      "resetToken": "reset_token_received_in_email"
+      "confirmPassword": "newpassword123"
     }`
 ```
 -   Response:
