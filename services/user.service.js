@@ -1,26 +1,27 @@
 const User = require ("../models/user.model.js")
-const hashpassword = require ("../config/bcryptConfig.js")
+const bcrypt = require ("bcrypt")
 
-const saveuser = async (email, password, role) => {
+const createUser = async (email, password) => {
     try {
-        const hashedpassword = await hashpassword (password);
-        const newUser = new User({
+        const hashedpassword = await  bcrypt.hash(password, 10);
+        const newUser = new User.create({
             email, 
-            password: hashedpassword,  
-            role,
+            password: hashedpassword 
+            //role,
         })
-        return newUser.save()
+        return newUser;
     }catch(error){
-        console.log("error occured while saving a user", error)
+        console.log("error occured while creating user", error)
     }
 }
+
 const findUserByEmail = async (email) => {
     try {
-        const user =await User.findOne(email);
+        const user = await User.findOne({email});
         return user
     }catch(error){
         console.log("error occured while finding a user by email", error)
     }
 }
 
-module.exports  = {saveuser, findUserByEmail}
+module.exports  = {createUser, findUserByEmail}

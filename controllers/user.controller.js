@@ -1,6 +1,6 @@
 const express = require("express");
-const { saveuser, findUserByEmail } = require("../services/user.service.js");
-const { comparepassword } = require("../config/bcryptConfig.js");
+const { createUser, findUserByEmail } = require("../services/user.service.js");
+const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 const User = require("../models/user.model.js");
@@ -8,30 +8,36 @@ const sendEmail = require("../utils/email.js");
 
 const signup = async (req, res) => {
   try {
-    const { email, password } = req.body;
-    //   const inputValidation=  validateSignupInput(email,password)
-    //   if(inputValidation.errors){
-    //      res.status(400).json(inputValidation.errors)
-    //   }
-    const exisitingUser = await findUserByEmail(email);
-    if (exisitingUser) {
-      return res.status(400).json({ message: "User already exists" });
+    const reqBody = req.body;
+
+    // Check if the user exists
+    const existingUser = await findUserByEmail(reqBody.email);
+
+    if (existingUser) {
+      return res.status(403).json({
+        success: false,
+        message: "User already exists",
+      });
     }
-    let role = "user";
-    const companyEmailRegex = /^[^@\s]+@(?:[^.@\s]+\.)?samuel\.com$/;
-    if (companyEmailRegex.test(email)) {
-      role = "Admin";
-    }
-    const newUser = await saveuser(email, password, role);
-    res
-      .status(200)
-      .json({ message: "user registered successfully", data: newUser });
+
+    // If not, create the user and send a response
+    const newUser = await createUser(reqBody);
+
+    return res.status(201).json({
+      success: true,
+      message: "User created successfully",
+      data: newUser,
+    });
   } catch (error) {
-    console.log("Error occurred while signup", error);
-    console.log(error);
-    res.status(500).json({ message: "Internal server error", error: error });
+    // Handle errors
+    console.error("Error creating user:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
   }
 };
+
 const login = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -39,15 +45,27 @@ const login = async (req, res) => {
     if (inputValidation.errors) {
       res.status(400).json(inputValidation.errors);
     }
-    const result = await comparepassword(email, password);
-    if (!result) {
-      return res.status(400).json({ message: "Invalid password" });
+    // check if user exists
+    const existingUser = User.findUserByEmail(email);
+    if (!existingUser) {
+      throw new Error("User does not exist");
     }
+    // take user password and compare to entered password
+    const isPasswordValid = await bcrypt.compare(
+      enteredPassword,
+      existingUser.password
+    );
+
+    if (!isPasswordValid) {
+      throw new Error("Invalid Password");
+    }
+
     const payload = { email };
     res.cookie("token", token, { httpOnly: true });
     const token = jwt.sign(payload, process.env.JWT_SECRET, {
       expiresIn: "1h",
     });
+
     return res.status(200).json({ message: "user successfully login", token });
   } catch (error) {
     console.log("Error occurred while login", error);
