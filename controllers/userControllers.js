@@ -10,10 +10,10 @@ const sendEmail = require("../utils/email");
 const signup = async(req,res) =>{
     try{
      const {email,password}=req.body
-     const inputValidation=  validateSignupInput(email,password)
-     if(inputValidation.errors){
-        res.status(400).json(inputValidation.errors)
-     }
+   //   const inputValidation=  validateSignupInput(email,password)
+   //   if(inputValidation.errors){
+   //      res.status(400).json(inputValidation.errors)
+   //   }
      const exisitingUser= await findUserByEmail(email);
      if(exisitingUser){
         return res.status(400).json({message: 'User already exists'})

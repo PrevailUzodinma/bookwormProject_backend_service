@@ -25,7 +25,7 @@ app.use((req, res, next) => {
 });
 app.use (cookieParser())
 
-app.use('api/v1/users', userrouter)
+app.use('/api/v1/users', userrouter)
 
 
 app.use(errorHandler);
