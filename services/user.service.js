@@ -3,7 +3,9 @@ const bcrypt = require ("bcrypt")
 
 const createUser = async (email, password) => {
     try {
-        const hashedpassword = await  bcrypt.hash(password, 10);
+        const saltRounds = 10;
+        const salt = await bcrypt.genSalt(saltRounds);
+        const hashedpassword = await bcrypt.hash(password, salt);
         const newUser = new User.create({
             email, 
             password: hashedpassword 
@@ -15,12 +17,13 @@ const createUser = async (email, password) => {
     }
 }
 
-const findUserByEmail = async (email) => {
+const findUserByEmail = async (userEmail) => {
     try {
-        const user = await User.findOne({email});
+        const user = await User.findOne({email: userEmail});
         return user
     }catch(error){
         console.log("error occured while finding a user by email", error)
+
     }
 }
 
