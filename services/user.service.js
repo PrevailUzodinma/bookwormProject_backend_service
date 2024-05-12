@@ -1,4 +1,4 @@
-const User = require ("../models/user.js")
+const User = require ("../models/user.model.js")
 const hashpassword = require ("../config/bcryptConfig.js")
 
 const saveuser = async (email, password, role) => {
@@ -16,7 +16,7 @@ const saveuser = async (email, password, role) => {
 }
 const findUserByEmail = async (email) => {
     try {
-        const user =await user.findOne (email);
+        const user =await User.findOne(email);
         return user
     }catch(error){
         console.log("error occured while finding a user by email", error)
