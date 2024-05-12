@@ -23,8 +23,8 @@ const signup = async(req,res) =>{
       if(companyEmailRegex.test(email)){
           role= "Admin";
       }
-    await saveuser(email,password,role);
-    res.status(200).json({message:"user registered successfully"});
+    const newUser = await saveuser(email,password,role);
+    res.status(200).json({message:"user registered successfully", Data:newUser});
      }catch(error){
         console.log("Error occurred while signup",error);
         console.log(error)
@@ -98,9 +98,21 @@ const resetPassword = async (req, res, next) => {
     // Get user whose passwordResetToken matches encrypted req.params.token and the token hasn't expired
     const user = await User.findOne({passwordResetToken: token, passwordResetTokenExpires: {$gt: Date.now()}});
  
-    if(!user){
- 
+    if (!user) {
+      throw new Error("Token is invalid or has expired");
     }
- }
+    // Reset User password
+    user.password = req.body.password;
+    user.confirmPassword = req.body.confirmPassword;
+    user.passwordResetToken = undefined;
+    user.passwordResetTokenExpires = undefined;
+  
+    user.save();
+  
+    res.status(200).json({
+      message: "password reset successfully",
+    });
+  };
+
  
  module.exports = {forgotPassword, resetPassword, signup, login}
