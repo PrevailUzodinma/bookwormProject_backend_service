@@ -15,7 +15,7 @@ const signup = async (req, res) => {
     const { email, password } = req.body;
 
     const existingUser = await findUserByEmail(email);
-    console.log("existing user: ", existingUser);
+  
     if (existingUser) {
       return res.status(409).json({
         success: false,
@@ -94,7 +94,7 @@ const forgotPassword = async (req, res, next) => {
 
   // save changes in the database
   const checkUser = await user.save();
-  console.log(checkUser);
+
   // 3. Send the token back to the user email, so user can use to reset password
   //Add reseturl that will be in email body for the user to click to reset password
   const resetUrl = `${req.protocol}://${req.get(
@@ -136,7 +136,6 @@ const resetPassword = async (req, res, next) => {
   console.log(token);
   // Get user whose passwordResetToken matches encrypted req.params.token and the token hasn't expired
   const user = await findUserByToken(token);
-  console.log(user);
 
   if (!user) {
     return res.status(404).json({ message: "Token is invalid or has expired" });
