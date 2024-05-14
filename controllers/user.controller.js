@@ -8,14 +8,14 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 const sendEmail = require("../utils/email.js");
-// const User = require('../models/user.model.js')
+const path = require("path")
 
 const signup = async (req, res) => {
   try {
     const { email, password } = req.body;
 
     const existingUser = await findUserByEmail(email);
-  
+
     if (existingUser) {
       return res.status(409).json({
         success: false,
@@ -44,10 +44,6 @@ const signup = async (req, res) => {
 const login = async (req, res) => {
   try {
     const { email, password } = req.body;
-    /*     const inputValidation = validateLoginInput({ email, password });
-    if (inputValidation.errors) {
-      res.status(400).json(inputValidation.errors);
-    } */
 
     // check if user exists
 
@@ -116,7 +112,6 @@ const forgotPassword = async (req, res, next) => {
     user.passwordResetToken = undefined;
     user.passwordResetTokenExpires = undefined;
     user.save();
-    console.log(error);
     return next(new Error("There was an error sending password reset email"));
   }
 };
@@ -124,34 +119,43 @@ const forgotPassword = async (req, res, next) => {
 // writing functionality for "reset password" - when user clicks on the reset link sent to their mail
 
 const getResetForm = (req, res) => {
-  // Render a password reset form where the user can input a new password
-  res.send("YOU'VE REACHED THE RESET PASSWORD FORM PAGE");
-  //res.render('resetPassword', { resetToken: req.params.resetToken });
+  // Serve the HTML file for the reset password form
+  res.sendFile(path.join(__dirname, "../path/to/resetPassword.html"));
 };
 
 const resetPassword = async (req, res, next) => {
-  // encrypt the "plain token" passed in the request url
-  const token = crypto.createHash("sha256").update(req.params.id).digest("hex");
+  try {
+    // encrypt the "plain token" passed in the request url
+    const token = crypto
+      .createHash("sha256")
+      .update(req.params.id)
+      .digest("hex");
 
-  console.log(token);
-  // Get user whose passwordResetToken matches encrypted req.params.token and the token hasn't expired
-  const user = await findUserByToken(token);
+    console.log(token);
+    // Get user whose passwordResetToken matches encrypted req.params.token and the token hasn't expired
+    const user = await findUserByToken(token);
 
-  if (!user) {
-    return res.status(404).json({ message: "Token is invalid or has expired" });
+    if (!user) {
+      return res
+        .status(404)
+        .json({ message: "Token is invalid or has expired" });
+    }
+    // Reset User password
+    user.password = req.body.password;
+    user.confirmPassword = req.body.confirmPassword;
+    user.passwordResetToken = undefined;
+    user.passwordResetTokenExpires = undefined;
+
+    user.save();
+
+    res.status(200).json({
+      message: "password reset successfully",
+    });
+  } catch (error) {
+    // Handle any errors
+    console.error("Error resetting password:", error);
+    res.status(500).json({ message: "Error resetting password" });
   }
-  // Reset User password
-  user.password = req.body.password;
-  user.confirmPassword = req.body.confirmPassword;
-  user.passwordResetToken = undefined;
-  user.passwordResetTokenExpires = undefined;
-
-  user.save();
-
-  res.status(200).json({
-    message: "password reset successfully",
-  });
-  // res.redirect('./login')
 };
 
 module.exports = { forgotPassword, resetPassword, getResetForm, signup, login };
