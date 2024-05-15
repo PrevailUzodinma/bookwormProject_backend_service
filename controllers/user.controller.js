@@ -62,7 +62,7 @@ const login = async (req, res) => {
     }
 
     // Create JWT token
-    const payload = { email };
+    const payload = { id: existingUser._id };
     const token = jwt.sign(payload, process.env.MY_SECRET_KEY_TOKEN, {
       expiresIn: "1h",
     });
@@ -140,9 +140,11 @@ const resetPassword = async (req, res, next) => {
         .status(404)
         .json({ message: "Token is invalid or has expired" });
     }
+    const saltRounds = 10;
+    const salt = await bcrypt.genSalt(saltRounds);
+    const newPasswordHash = await bcrypt.hash(req.body.password, salt);
     // Reset User password
-    user.password = req.body.password;
-    user.confirmPassword = req.body.confirmPassword;
+    user.password = newPasswordHash;
     user.passwordResetToken = undefined;
     user.passwordResetTokenExpires = undefined;
 
@@ -158,4 +160,10 @@ const resetPassword = async (req, res, next) => {
   }
 };
 
-module.exports = { forgotPassword, resetPassword, getResetForm, signup, login };
+const logout = (req, res) => {
+  // Clear the token cookie from the client-side
+  res.clearCookie('token');
+  res.status(200).json({ message: "Logout successful" });
+  };
+
+module.exports = { forgotPassword, resetPassword, getResetForm, signup, login, logout };
