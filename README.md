@@ -61,19 +61,19 @@ Authentication
 ```
     json
 
-    `{
+    {
       "email": "example@example.com"
-    }`
+    }
 ```
 -   Response: 
 
 ```
     json
 
-    `{
+    {
      status: 'success',
      message: 'password reset link sent to the user email'
-   }`
+   }
 ```
 
 
@@ -86,19 +86,33 @@ Authentication
 ```
     json
 
-    `{
+    {
       "password": "newpassword123",
       "confirmPassword": "newpassword123"
-    }`
+    }
 ```
 -   Response:
 
 ```
     json
 
-    `{
+    {
       "message": "password reset successfully",
-    }`
+    }
+```
+### Reset Password
+
+-   Method: `GET`
+-   Route: `https://books-be-11.onrender.com/api/v1/users/logout`
+-   Description: Logs out an existing user.
+-   Response:
+
+```
+    json
+
+    {
+      message: "Logout successful"
+    }
 ```
 
 
