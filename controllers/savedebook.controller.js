@@ -4,6 +4,7 @@ class SavedebookController{
 
 async saveEbook(req, res){
     const {userId} = req.user;
+    const { id } = req.body;
     const savedbook = await SavedebookService.saveEbook(id, userId);
       
       res.status(200).json({
