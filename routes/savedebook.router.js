@@ -4,12 +4,12 @@ const SavedebookController = require("../controllers/savedebook.controller.js");
 
 
 // Route to save an ebook
-router.post('/save', SavedebookController.saveEbook);
+router.post('/save', verifyToken, SavedebookController.saveEbook);
 
 // Route to get saved ebooks for a user
-router.get('/saved', SavedebookController.getSavedEbook);
+router.get('/saved', verifyToken, SavedebookController.getSavedEbook);
 
 // Route to delete a saved ebook by ID
-router.delete('/saved/:id', SavedebookController.deleteSavedEbook);
+router.delete('/saved/:id', verifyToken, SavedebookController.deleteSavedEbook);
 
 module.exports = router;
