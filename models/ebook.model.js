@@ -15,9 +15,15 @@ const ebookSchema = new mongoose.Schema({
     categories:{
         type: Array
     },
-    author,
-    thumbnail,
-    url
+    author: {
+        type: String
+      },
+      thumbnail: {
+        type: String
+      },
+      url: {
+        type: String
+      }
 })
 
 const eBook = mongoose.model('eBook', ebookSchema);

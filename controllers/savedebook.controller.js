@@ -32,7 +32,7 @@ async getSavedEbook(req, res){
       res.status(200).json({
         success: true,
         message: "Saved ebooks fetched successfully",
-        data: ebooks,
+        data: savedbooks,
       });
     } catch (error) {
       // Handle errors
@@ -73,4 +73,5 @@ async deleteSavedEbook(req, res){
     }
 
 }
+
 module.exports = new SavedebookController();

@@ -23,14 +23,16 @@ class SavedebookService {
       const ebooks = await Savedebook.find({ userId });
       return ebooks;
     } catch (error) {
+      console.log(error);
       throw new Error("Error retrieving user's saved ebooks");
     }
   }
   async getSavedEbookById(id) {
     try {
-      const ebook = await Savedebook.findById({ id });
+      const ebook = await Savedebook.findById({_id: id });
       return ebook;
     } catch (error) {
+
       throw new Error("Error retrieving ebook");
     }
   }

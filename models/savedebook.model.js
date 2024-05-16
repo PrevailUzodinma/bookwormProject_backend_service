@@ -4,7 +4,7 @@ const eBook = require("./ebook.model");
 
 const savedebookSchema = new mongoose.Schema({
     ebookId:{
-        type: string,
+        type: String,
         required: true
     },
     userId:{

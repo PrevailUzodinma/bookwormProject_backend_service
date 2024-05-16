@@ -7,7 +7,7 @@ const userRouter = require("./routes/user.router.js");
 const ebookRouter = require("./routes/ebook.router.js");
 const cookieParser = require("cookie-parser");
 const errorHandler = require("./middlewares/error.middleware.js");
-const connectDB = require('./config/mongodb.js')
+const connectDB = require("./config/mongodb.js");
 
 // Connect to Database
 connectDB();
@@ -27,6 +27,7 @@ app.use(cookieParser());
 
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/ebooks", ebookRouter);
+
 
 
 app.use(errorHandler);
