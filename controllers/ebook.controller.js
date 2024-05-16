@@ -3,28 +3,28 @@ const eBookService = require("../services/ebook.service");
 class eBookController {
   async searchEbooks(req, res) {
     try {
-    // Destructure the request query to extract every query passed
-    const { q, keyword, author, categories } = req.query;
+      // Destructure the request query to extract every query passed
+      const { q, keyword, author, categories } = req.query;
 
-    // Construct the params object based on the provided query parameters
-    const params = {};
-    if (q) params.q = q;
+      // Construct the params object based on the provided query parameters
+      const params = {};
+      if (q) params.q = q;
 
-    let queryString = "";
-    if (keyword) {
-      queryString += `intitle:${keyword} `;
-    }
-    if (author) {
-      queryString += `inauthor:${author} `;
-    }
-    if (categories) {
-      queryString += `subject:${categories} `;
-    }
+      let queryString = "";
+      if (keyword) {
+        queryString += `intitle:${keyword} `;
+      }
+      if (author) {
+        queryString += `inauthor:${author} `;
+      }
+      if (categories) {
+        queryString += `subject:${categories} `;
+      }
 
-    // Append the additional qualifiers to the general search query
-    if (queryString) {
-      params.q = queryString.trim();
-    }
+      // Append the additional qualifiers to the general search query
+      if (queryString) {
+        params.q = queryString.trim();
+      }
       // Assuming eBookService.searchBooks can handle an object of query parameters
       const ebooks = await eBookService.searchBooks(params);
       if (!ebooks || ebooks.length === 0) {
@@ -40,7 +40,7 @@ class eBookController {
       });
     } catch (error) {
       // Handle errors
-      return res.status(500).json({
+      res.status(500).json({
         success: false,
         message: "Internal server error",
       });
@@ -52,7 +52,7 @@ class eBookController {
       const { id } = req.params;
       const ebook = await eBookService.getBookByID(id);
       if (!ebook) {
-        res.status(403).json({
+        return res.status(404).json({
           success: false,
           message: "Oops! This ebook is not available",
         });

@@ -41,7 +41,7 @@ class eBookService {
     try {
       // Send a request to the Google Books API to get the book by ID
       const response = await axios.get(
-        `https://www.googleapis.com/books/v1/volumes/${id}/${process.env.API_KEY}`
+        `https://www.googleapis.com/books/v1/volumes/${id}`
       );
       const ebook = response.data.volumeInfo;
 
