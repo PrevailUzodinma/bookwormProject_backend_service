@@ -5,32 +5,30 @@ class eBookService {
   async searchBooks(params) {
     try {
       console.log(params);
+
+      // Send a request to the Google Books API
       const response = await axios.get(
-        "https://gnikdroy.pythonanywhere.com/api/book/",
+        "https://www.googleapis.com/books/v1/volumes",
         {
-          params
+          params,
         }
       );
 
       // Extract relevant data from the API response
-      const ebooks = response.data.results.map((ebook) => {
-        const author = ebook.agents.find(
-          (agent) => agent.type === "Author"
-        )?.person;
-        const thumbnail = ebook.resources.find(
-          (resource) => resource.type === "image/jpeg"
-        )?.uri;
-        const url = ebook.resources.find(
-          (resource) => resource.type === "text/html"
-        )?.uri;
+      const ebooks = response.data.items.map((item) => {
+        const volumeInfo = item.volumeInfo;
         return {
-          id: ebook.id,
-          title: ebook.title,
-          description: ebook.description,
-          categories: ebook.subjects,
-          author,
-          thumbnail,
-          url,
+          id: item.id,
+          title: volumeInfo.title,
+          description: volumeInfo.description || "no description available",
+          categories: volumeInfo.categories || [],
+          author: volumeInfo.authors
+            ? volumeInfo.authors.join(", ")
+            : "Unknown",
+          thumbnail: volumeInfo.imageLinks
+            ? volumeInfo.imageLinks.thumbnail
+            : null,
+          url: volumeInfo.previewLink,
         };
       });
 
@@ -42,25 +40,22 @@ class eBookService {
 
   async getBookByID(id) {
     try {
+      // Send a request to the Google Books API to get the book by ID
       const response = await axios.get(
-        `https://gnikdroy.pythonanywhere.com/api/book/${id}`
+        `https://www.googleapis.com/books/v1/volumes/${id}`
       );
-      const ebook = response.data;
-      const author = ebook.agents.find(
-        (agent) => agent.type === "Author"
-      )?.person;
-      const thumbnail = ebook.resources.find(
-        (resource) => resource.type === "image/jpeg"
-      )?.uri;
-      const url = ebook.resources.find(
-        (resource) => resource.type === "text/html"
-      )?.uri;
+      const ebook = response.data.volumeInfo;
+
+      // Extract relevant data from the API response
+      const author = ebook.authors ? ebook.authors.join(", ") : "Unknown";
+      const thumbnail = ebook.imageLinks ? ebook.imageLinks.thumbnail : null;
+      const url = ebook.previewLink;
 
       return {
-        id: ebook.id,
+        id: response.data.id,
         title: ebook.title,
-        description: ebook.description,
-        categories: ebook.subjects,
+        description: ebook.description || "no description",
+        categories: ebook.categories || [],
         author,
         thumbnail,
         url,
