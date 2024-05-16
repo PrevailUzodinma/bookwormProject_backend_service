@@ -4,13 +4,12 @@ class eBookService {
   // function to search for ebooks using the Project Gutenberg API
   async searchBooks(params) {
     try {
-      console.log(params);
-
       // Send a request to the Google Books API
       const response = await axios.get(
         "https://www.googleapis.com/books/v1/volumes",
         {
           params,
+          key: process.env.API_KEY,
         }
       );
 
@@ -42,7 +41,7 @@ class eBookService {
     try {
       // Send a request to the Google Books API to get the book by ID
       const response = await axios.get(
-        `https://www.googleapis.com/books/v1/volumes/${id}`
+        `https://www.googleapis.com/books/v1/volumes/${id}/${process.env.API_KEY}`
       );
       const ebook = response.data.volumeInfo;
 
