@@ -5,7 +5,7 @@ const SavedebookController = require("../controllers/savedebook.controller.js");
 
 
 // Route to search ebooks
-router.post('/', eBookController.searchEbooks);
+router.post('/search', eBookController.searchEbooks);
 
 router.post('/save', verifyToken, SavedebookController.saveEbook);
 
@@ -16,6 +16,6 @@ router.get('/saved', verifyToken, SavedebookController.getSavedEbook);
 router.delete('/saved/:id', verifyToken, SavedebookController.deleteSavedEbook);
 
 // Route to search ebook by id
-router.get('/:id',eBookController.searchEbooksById);
+router.get('/search/:id',eBookController.searchEbooksById);
 
 module.exports = router; 
