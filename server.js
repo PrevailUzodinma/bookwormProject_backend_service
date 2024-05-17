@@ -4,10 +4,11 @@ const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const logger = require("logger");
-const userRouter = require("./routes/user.router.js");
+const router = require("./routes/index.router.js");
 const cookieParser = require("cookie-parser");
 const errorHandler = require("./middlewares/error.middleware.js");
-const connectDB = require('./config/mongodb.js')
+const connectDB = require("./config/mongodb.js");
+
 
 
 // Connect to Database
@@ -29,7 +30,8 @@ app.use((req, res, next) => {
 });
 app.use(cookieParser());
 
-app.use("/api/v1/users", userRouter);
+app.use("/api/v1/", router);
+
 
 
 app.use(errorHandler);
