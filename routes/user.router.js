@@ -1,6 +1,6 @@
-const router = require ("express").Router()
-const verifyToken = require("../middlewares/verifyToken.middleware.js")
-const {signup, login, forgotPassword, resetPassword, getResetForm, logout}= require ('../controllers/user.controller.js')
+const router = require ("express").Router();
+const verifyToken = require("../middlewares/verifyToken.middleware.js");
+const {signup, login, forgotPassword, resetPassword, logout}= require ('../controllers/user.controller.js')
 
 
 router.post('/signup', signup)
