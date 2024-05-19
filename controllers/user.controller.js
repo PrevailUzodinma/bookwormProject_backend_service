@@ -94,7 +94,19 @@ const forgotPassword = async (req, res, next) => {
   // 3. Send the token back to the user email, so user can use to reset password
   //Add reseturl that will be in email body for the user to click to reset password
   const resetUrl = `https://books-fe-11-21.onrender.com/resetPassword?token=${resetToken}`;
-  const message = `We have received a password reset request. Please use the below link to reset your password \n\n ${resetUrl} \n\n This reset password link will be valid for 10mins`;
+  const message =  `Hello,
+
+  We received a request to reset your password. Please copy the token below and paste it in the required field to reset your password:
+
+  Token: ${resetToken}
+
+  This token will be valid for 10 minutes.
+
+  If you did not request a password reset, please ignore this email or contact support if you have questions.
+
+  Best regards,
+  Bookworm.
+`;
   try {
     await sendEmail({
       email: user.email,
@@ -121,7 +133,7 @@ const resetPassword = async (req, res, next) => {
     // encrypt the "plain token" passed in the request url
     const token = crypto
       .createHash("sha256")
-      .update(req.params.id)
+      .update(req.body.token)
       .digest("hex");
 
     console.log(token);
