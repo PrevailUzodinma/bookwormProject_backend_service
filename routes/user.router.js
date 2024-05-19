@@ -6,7 +6,6 @@ const {signup, login, forgotPassword, resetPassword, getResetForm, logout}= requ
 router.post('/signup', signup)
 router.post('/login', login)
 router.post('/forgotPassword', forgotPassword)
-router.get('/resetPassword/:id', getResetForm)
 router.patch('/resetPassword/:id', resetPassword)
 router.get('/logout', logout);
 
