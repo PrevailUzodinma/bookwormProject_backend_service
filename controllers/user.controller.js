@@ -116,12 +116,7 @@ const forgotPassword = async (req, res, next) => {
   }
 };
 
-// writing functionality for "reset password" - when user clicks on the reset link sent to their mail
 
-const getResetForm = (req, res) => {
-  // Serve the HTML file for the reset password form
-  res.sendFile(path.join(__dirname, "../path/to/resetPassword.html"));
-};
 
 const resetPassword = async (req, res, next) => {
   try {

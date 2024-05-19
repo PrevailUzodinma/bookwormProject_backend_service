@@ -37,7 +37,6 @@ app.use(express.static(path.join(__dirname, 'frontend/build')));
 
 app.use("/api/v1/", router);
 
-
 app.use(errorHandler);
 
 // STARTING THE SERVER
