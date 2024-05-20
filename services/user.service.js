@@ -1,5 +1,5 @@
 const User = require("../models/user.model.js");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 
 const createUser = async (email, password) => {
   try {
