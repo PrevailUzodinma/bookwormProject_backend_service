@@ -4,7 +4,7 @@ const {
   findUserByEmail,
   findUserByToken,
 } = require("../services/user.service.js");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 const sendEmail = require("../utils/email.js");
@@ -92,8 +92,6 @@ const forgotPassword = async (req, res, next) => {
   const checkUser = await user.save();
 
   // 3. Send the token back to the user email, so user can use to reset password
-  //Add reseturl that will be in email body for the user to click to reset password
-  const resetUrl = `https://books-fe-11-21.onrender.com/resetPassword?token=${resetToken}`;
   const message =  `Hello,
 
   We received a request to reset your password. Please copy the token below and paste it in the required field to reset your password:
