@@ -119,7 +119,7 @@ eBook API Documentation
 -----------------------
 ### 1\. Search eBooks
 
--   Method: `POST`
+-   Method: `GET`
 -   Route: `https://books-be-11.onrender.com/api/v1/ebooks/search`
 -   Description: Search for eBooks using various query parameters. You can combine multiple parameters to refine your search.
 
@@ -132,23 +132,23 @@ eBook API Documentation
 -   Request Example:
     - Searching by general term
     ```
-    POST /ebooks/search?q=love
+    GET /ebooks/search?q=love
     ``` 
     - Searching by author only
     ```
-    POST /ebooks/search?author=john
+    GET /ebooks/search?author=john
     ``` 
     - Searching by category only
     ```
-    POST /ebooks/search?categories=fantasy
+    GET /ebooks/search?categories=fantasy
     ``` 
     - Searching by author, and category
     ```
-    POST /ebooks/search?author=harry&categories=fiction
+    GET /ebooks/search?author=harry&categories=fiction
     ``` 
     - Searching by keyword, author, and category
     ```
-    POST /ebooks/search?keyword=cream&author=mary&categories=fantasy
+    GET /ebooks/search?keyword=cream&author=mary&categories=fantasy
     ``` 
 
 -   Response: Returns the search data.
