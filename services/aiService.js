@@ -4,6 +4,7 @@ class AIService {
     constructor(apiKey) {
         this.apiKey = apiKey;
         this.apiUrl = 'https://api.openai.com/v1/completions';
+        this.model = 'gpt-3.5-turbo-instruct'; 
     }
 
     async summarize(text) {
@@ -11,7 +12,7 @@ class AIService {
             const response = await axios.post(this.apiUrl, {
                 prompt: `Summarize this text:\n\n${text}\n\nSummary:`,
                 max_tokens: 150,
-                model: 'davinci-002',
+                model: this.model,
             }, {
                 headers: {
                     'Authorization': `Bearer ${this.apiKey}`,
@@ -32,10 +33,12 @@ class AIService {
             const response = await axios.post(this.apiUrl, {
                 prompt: `Generate ${difficulty} level quiz questions based on the following text:\n\n${text}\n\nQuestions:`,
                 max_tokens: 150,
+                model: this.model,
             }, {
                 headers: {
                     'Authorization': `Bearer ${this.apiKey}`,
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'OpenAI-Beta': 'assistants=v1',
                 }
             });
 
