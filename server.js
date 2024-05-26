@@ -8,6 +8,7 @@ const router = require("./routes/index.router.js");
 const cookieParser = require("cookie-parser");
 const errorHandler = require("./middlewares/error.middleware.js");
 const connectDB = require("./config/mongodb.js");
+const path = require('path');
 
 
 
@@ -28,11 +29,13 @@ app.use((req, res, next) => {
   console.log(`${req.method} ${req.url}`);
   next();
 });
+
 app.use(cookieParser());
 
+// Serve static files from the React app's build directory
+app.use(express.static(path.join(__dirname, 'frontend/build')));
+
 app.use("/api/v1/", router);
-
-
 
 app.use(errorHandler);
 
