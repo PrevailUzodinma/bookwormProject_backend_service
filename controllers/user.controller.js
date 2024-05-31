@@ -8,7 +8,6 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 const sendEmail = require("../utils/email.js");
-const path = require("path")
 
 const signup = async (req, res) => {
   try {
@@ -92,7 +91,7 @@ const forgotPassword = async (req, res, next) => {
   const checkUser = await user.save();
 
   // 3. Send the token back to the user email, so user can use to reset password
-  const message =  `Hello,
+  const message = `Hello,
 
   We received a request to reset your password. Please copy the token below and paste it in the required field to reset your password:
 
@@ -124,8 +123,6 @@ const forgotPassword = async (req, res, next) => {
   }
 };
 
-
-
 const resetPassword = async (req, res, next) => {
   try {
     // encrypt the "plain token" passed in the request url
@@ -134,7 +131,6 @@ const resetPassword = async (req, res, next) => {
       .update(req.body.token)
       .digest("hex");
 
-    console.log(token);
     // Get user whose passwordResetToken matches encrypted req.params.token and the token hasn't expired
     const user = await findUserByToken(token);
 
@@ -165,8 +161,8 @@ const resetPassword = async (req, res, next) => {
 
 const logout = (req, res) => {
   // Clear the token cookie from the client-side
-  res.clearCookie('token');
+  res.clearCookie("token");
   res.status(200).json({ message: "Logout successful" });
-  };
+};
 
 module.exports = { forgotPassword, resetPassword, signup, login, logout };
